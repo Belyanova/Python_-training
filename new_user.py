@@ -1,15 +1,13 @@
-﻿class User:
-    def __init__(self, name, middlename, last_name, nickname, title, company, address, phone_home,
-                 phone_mobile, phone_work, mail1, mail2, mail3, bd_day, bd_month, bd_year, aday, amonth, ayear,
-                    address2, phone2, notes):
-        self.name = name
+﻿class User_info:
+    def __init__(self, User_name, middlename, last_name, nickname, title, company, address, phone_home, phone_mobile, phone_work, mail1, mail2, mail3, bd_day, bd_month, bd_year, aday, amonth, ayear, address2, phone2, notes):
+        self.User_name = User_name
         self.middlename = middlename
         self.last_name = last_name
         self.nickname = nickname
         self.title = title
         self.company = company
         self.address = address
-        self.phone_home = phome_home
+        self.phone_home = phone_home
         self.phone_mobile = phone_mobile
         self.phone_work = phone_work
         self.mail1 = mail1

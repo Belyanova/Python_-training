@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
+from new_user import User_info
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
-from user import User
 import unittest
+
 
 class User(unittest.TestCase):
     def setUp(self):
@@ -20,11 +21,11 @@ class User(unittest.TestCase):
         wd.find_element_by_name("pass").send_keys("secret")
         wd.find_element_by_xpath("//input[@value='Login']").click()
 
-    def add_user(self, wd, user):
+    def add_new_user(self, wd, new_user):
         wd.find_element_by_link_text("add new").click()
         wd.find_element_by_name("firstname").click()
         wd.find_element_by_name("firstname").clear()
-        wd.find_element_by_name("firstname").send_keys(name)
+        wd.find_element_by_name("firstname").send_keys(User_name)
         wd.find_element_by_name("middlename").clear()
         wd.find_element_by_name("middlename").send_keys(middlename)
         wd.find_element_by_name("lastname").clear()
@@ -89,8 +90,7 @@ class User(unittest.TestCase):
         wd = self.wd
         self.open_home_page(wd)
         self.login(wd)
-        self.add_user(wd, User(name="User_name", middlename="name", last_name="Last_name", nickname="Nickname",
-                 title="Title", company="Company", address="Address", phone_home="999888777", phone_mobile="12345678",
+        self.add_new_user(wd, User_info(User_name="User_name", middlename="name", last_name="Last_name", nickname="Nickname",title="Title", company="Company", address="Address", phone_home="999888777", phone_mobile="12345678",
                  phone_work="87654321", mail1="e-mail_1", mail2="e-mail_2", mail3="e-mail_3", bd_day="1", bd_month="April",
                  bd_year="1998", aday="1", amonth="April", ayear="2000", address2="Address", phone2="Home",
                  notes="Notes"))
