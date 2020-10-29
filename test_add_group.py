@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from selenium import webdriver
 import unittest
-from Configurations import *
+from configurations_login import *
 
 class UntitledTestCase(unittest.TestCase):
     def setUp(self):

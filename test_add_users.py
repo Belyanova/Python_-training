@@ -2,8 +2,8 @@
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 import unittest
-from Configurations import *
-
+from configurations_login import Configurations_login
+from configurations_user import Configurations_user
 
 class User(unittest.TestCase):
     def setUp(self):
@@ -13,7 +13,7 @@ class User(unittest.TestCase):
     def open_start_page(self, wd):
         wd.get("http://localhost/index.php")
 
-    def login(self, wd, Configurations):
+    def login(self, wd, configurations_login):
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
         wd.find_element_by_name("user").send_keys(Configurations.username)
@@ -21,7 +21,7 @@ class User(unittest.TestCase):
         wd.find_element_by_name("pass").send_keys(Configurations.password)
         wd.find_element_by_xpath("//input[@value='Login']").click()
 
-    def add_new_user(self, wd, Configurations):
+    def add_new_user(self, wd, configurations_user):
         wd.find_element_by_link_text("add new").click()
         wd.find_element_by_name("firstname").click()
         wd.find_element_by_name("firstname").clear()

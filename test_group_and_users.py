@@ -2,7 +2,7 @@
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 import unittest
-from Configurations import *
+from configurations_login import *
 
 class User(unittest.TestCase):
     def setUp(self):
