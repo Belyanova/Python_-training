@@ -87,12 +87,13 @@ class User(unittest.TestCase):
         wd.find_element_by_link_text("Logout").click()
 
     def test_user(self):
+        user = Configurations_user("User_name", "name", "Last_name", "Nickname", "Title", "Company", "Address", "999888777",
+                          "12345678", "87654321", "e-mail_1", "e-mail_2", "e-mail_3", "1", "April", "1998", "1",
+                          "April", "2000", "Address", "Home", "Notes")
         wd = self.wd
         self.open_start_page(wd)
         self.login(wd, Configurations_login(username="admin", password="secret"))
-        self.add_new_user(wd,Configurations_user("User_name", "name", "Last_name", "Nickname", "Title", "Company", "Address", "999888777",
-                          "12345678", "87654321", "e-mail_1", "e-mail_2", "e-mail_3", "1", "April", "1998", "1",
-                          "April", "2000", "Address", "Home", "Notes"))
+        self.add_new_user(wd,user)
         self.return_start_page(wd)
         self.logout(wd)
 
