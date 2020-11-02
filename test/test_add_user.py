@@ -1,8 +1,8 @@
 ﻿# -*- coding: utf-8 -*-
 import pytest
-from configurations_login import Configurations_login
-from configurations_user import Configurations_user
-from application_user import Application
+from model.configurations_login import Configurations_login
+from model.configurations_user import Configurations_user
+from fixture.application_user import Application
 
 @pytest.fixture()
 def app(request):
