@@ -1,19 +1,19 @@
-﻿# -*- coding: utf-8 -*-
-from selenium import webdriver
+﻿from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 import unittest
-from configurations_login import Configurations_login
-from configurations_user import Configurations_user
 
-class User(unittest.TestCase):
-    def setUp(self):
+class Application:
+    def __init__(self):
         self.wd = webdriver.Firefox()
         self.wd.implicitly_wait(30)
 
-    def open_start_page(self, wd):
+    def open_start_page(self):
+        wd = self.wd
         wd.get("http://localhost/index.php")
 
-    def login(self, wd, configurations_login):
+    def login(self, configurations_login):
+        wd = self.wd
+        self.open_start_page()
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
         wd.find_element_by_name("user").send_keys(configurations_login.username)
@@ -21,7 +21,8 @@ class User(unittest.TestCase):
         wd.find_element_by_name("pass").send_keys(configurations_login.password)
         wd.find_element_by_xpath("//input[@value='Login']").click()
 
-    def add_new_user(self, wd, configurations_user):
+    def add_new_user(self, configurations_user):
+        wd = self.wd
         wd.find_element_by_link_text("add new").click()
         wd.find_element_by_name("firstname").click()
         wd.find_element_by_name("firstname").clear()
@@ -79,26 +80,15 @@ class User(unittest.TestCase):
         wd.find_element_by_name("notes").clear()
         wd.find_element_by_name("notes").send_keys(configurations_user.notes)
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
+        self.return_start_page()
 
-    def return_start_page(self, wd):
+    def return_start_page(self):
+        wd = self.wd
         wd.find_element_by_link_text("home page").click()
 
-    def logout(self, wd):
+    def logout(self):
+        wd = self.wd
         wd.find_element_by_link_text("Logout").click()
 
-    def test_user(self):
-        user = Configurations_user("User_name", "name", "Last_name", "Nickname", "Title", "Company", "Address", "999888777",
-                          "12345678", "87654321", "e-mail_1", "e-mail_2", "e-mail_3", "1", "April", "1998", "1",
-                          "April", "2000", "Address", "Home", "Notes")
-        wd = self.wd
-        self.open_start_page(wd)
-        self.login(wd, Configurations_login(username="admin", password="secret"))
-        self.add_new_user(wd,user)
-        self.return_start_page(wd)
-        self.logout(wd)
-
-    def tearDown(self):
+    def destroy(self):
         self.wd.quit()
-
-if __name__ == "__main__":
-    unittest.main()
