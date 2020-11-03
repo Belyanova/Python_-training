@@ -72,7 +72,22 @@ class UserHelper:
         # удалить первый контакт
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         wd.switch_to_alert().accept()
-        #self.return_start_page()
+
+    def edit_first_user(self):
+        wd = self.app.wd
+        # Изменить первый контакт
+        wd.find_element_by_xpath("//img[@alt='Edit']").click()
+        wd.find_element_by_name("firstname").click()
+        wd.find_element_by_name("firstname").clear()
+        wd.find_element_by_name("firstname").send_keys('new firstname')
+        wd.find_element_by_name("middlename").clear()
+        wd.find_element_by_name("middlename").send_keys('new middlename')
+        wd.find_element_by_name("lastname").clear()
+        wd.find_element_by_name("lastname").send_keys('new last_name')
+        wd.find_element_by_name("nickname").clear()
+        wd.find_element_by_name("nickname").send_keys('new nickname')
+        wd.find_element_by_xpath("(//input[@name='update'])[2]").click()
+        self.return_start_page()
 
     def return_start_page(self):
         wd = self.app.wd
