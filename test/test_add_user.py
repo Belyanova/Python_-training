@@ -2,7 +2,7 @@
 import pytest
 from model.configurations_login import Configurations_login
 from model.configurations_user import Configurations_user
-from fixture.application_user import Application
+from fixture.application import Application
 
 @pytest.fixture()
 def app(request):

@@ -1,5 +1,7 @@
 ﻿from selenium import webdriver
+from selenium.webdriver.support.ui import Select
 from fixture.session import SessionHelper
+from fixture.user import UserHelper
 from fixture.group import GroupHelper
 import unittest
 
@@ -9,6 +11,7 @@ class Application:
         self.wd.implicitly_wait(60)
         self.session = SessionHelper(self)
         self.group = GroupHelper(self)
+        self.user = UserHelper(self)
 
     def open_home_page(self):
         wd = self.wd
