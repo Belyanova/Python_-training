@@ -1,14 +1,6 @@
 # -*- coding: utf-8 -*-
-import pytest
 from model.configurations_login import Configurations_login
 from model.configurations_group import Configurations_group
-from fixture.application import Application
-
-@pytest.fixture()
-def app(request):
-    fixture = Application()
-    request.addfinalizer(fixture.destroy)
-    return fixture
 
 def test_case(app):
     app.session.login(Configurations_login(username="admin", password="secret"))

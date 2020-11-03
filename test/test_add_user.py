@@ -1,14 +1,6 @@
 ﻿# -*- coding: utf-8 -*-
-import pytest
 from model.configurations_login import Configurations_login
 from model.configurations_user import Configurations_user
-from fixture.application import Application
-
-@pytest.fixture()
-def app(request):
-    fixture = Application()
-    request.addfinalizer(fixture.destroy)
-    return fixture
 
 def test_user(app):
     user = Configurations_user("User_name", "name", "Last_name", "Nickname", "Title", "Company", "Address", "999888777",
