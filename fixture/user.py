@@ -65,6 +65,15 @@ class UserHelper:
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
         self.return_start_page()
 
+    def delete_first_user(self):
+        wd = self.app.wd
+        # выбрать первый контакт
+        wd.find_element_by_name("selected[]").click()
+        # удалить первый контакт
+        wd.find_element_by_xpath("//input[@value='Delete']").click()
+        wd.switch_to_alert().accept()
+        #self.return_start_page()
+
     def return_start_page(self):
         wd = self.app.wd
         wd.find_element_by_link_text("home page").click()
