@@ -4,9 +4,17 @@ class UserHelper:
     def __init__(self, app):
         self.app = app
 
-    def add_new_user(self, configurations_user):
+    def open_add_user_page(self):
         wd = self.app.wd
         wd.find_element_by_link_text("add new").click()
+        return wd
+
+    def save_user(self):
+        wd = self.app.wd
+        wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
+
+    def fill_in_user(self, configurations_user):
+        wd = self.app.wd
         wd.find_element_by_name("firstname").click()
         wd.find_element_by_name("firstname").clear()
         wd.find_element_by_name("firstname").send_keys(configurations_user.firstname)
@@ -62,6 +70,13 @@ class UserHelper:
         wd.find_element_by_name("phone2").send_keys(configurations_user.phone2)
         wd.find_element_by_name("notes").clear()
         wd.find_element_by_name("notes").send_keys(configurations_user.notes)
+
+    def save_user(self):
+        wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
+
+    def add_new_user(self, configurations_user):
+        wd = self.open_add_user_page()
+        self.fill_in_user(configurations_user)
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
         self.return_start_page()
 
@@ -73,21 +88,12 @@ class UserHelper:
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         wd.switch_to_alert().accept()
 
-    def edit_first_user(self):
+    def edit_first_user(self, configurations_user):
         wd = self.app.wd
         # Изменить первый контакт
         wd.find_element_by_xpath("//img[@alt='Edit']").click()
-        wd.find_element_by_name("firstname").click()
-        wd.find_element_by_name("firstname").clear()
-        wd.find_element_by_name("firstname").send_keys('new firstname')
-        wd.find_element_by_name("middlename").clear()
-        wd.find_element_by_name("middlename").send_keys('new middlename')
-        wd.find_element_by_name("lastname").clear()
-        wd.find_element_by_name("lastname").send_keys('new last_name')
-        wd.find_element_by_name("nickname").clear()
-        wd.find_element_by_name("nickname").send_keys('new nickname')
+        self.fill_in_user(configurations_user)
         wd.find_element_by_xpath("(//input[@name='update'])[2]").click()
-        self.return_start_page()
 
     def return_start_page(self):
         wd = self.app.wd
