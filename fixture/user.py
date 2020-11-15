@@ -72,6 +72,7 @@ class UserHelper:
         wd.find_element_by_name("notes").send_keys(configurations_user.notes)
 
     def save_user(self):
+        wd = self.app.wd
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
 
     def add_new_user(self, configurations_user):
@@ -83,14 +84,17 @@ class UserHelper:
     def delete_first_user(self):
         wd = self.app.wd
         # выбрать первый контакт
+        wd.find_element_by_link_text("home").click()
         wd.find_element_by_name("selected[]").click()
         wd.find_element_by_xpath("//img[@alt='Edit']").click()
         # удалить первый контакт
         wd.find_element_by_xpath("(//input[@name='update'])[3]").click()
         #wd.switch_to_alert().accept()
 
+
     def edit_first_user(self, configurations_user):
         wd = self.app.wd
+        wd.find_element_by_link_text("home").click()
         # Изменить первый контакт
         wd.find_element_by_xpath("//img[@alt='Edit']").click()
         self.fill_in_user(configurations_user)
