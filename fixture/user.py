@@ -84,9 +84,10 @@ class UserHelper:
         wd = self.app.wd
         # выбрать первый контакт
         wd.find_element_by_name("selected[]").click()
+        wd.find_element_by_xpath("//img[@alt='Edit']").click()
         # удалить первый контакт
-        wd.find_element_by_xpath("//input[@value='Delete']").click()
-        wd.switch_to_alert().accept()
+        wd.find_element_by_xpath("(//input[@name='update'])[3]").click()
+        #wd.switch_to_alert().accept()
 
     def edit_first_user(self, configurations_user):
         wd = self.app.wd
