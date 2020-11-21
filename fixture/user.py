@@ -4,9 +4,15 @@ class UserHelper:
     def __init__(self, app):
         self.app = app
 
+    def open_users_page(self):
+        wd = self.app.wd
+        if not (wd.current_url.endswith("/index.php") and (wd.find_element_by_xpath("//img[@alt='vCard']"))):
+            wd.find_element_by_link_text("home").click()
+
     def open_add_user_page(self):
         wd = self.app.wd
-        wd.find_element_by_link_text("add new").click()
+        if not wd.find_elements_by_name("photo"):
+            wd.find_element_by_link_text("add new").click()
         return wd
 
     def save_user(self):
@@ -71,12 +77,9 @@ class UserHelper:
         wd.find_element_by_name("notes").clear()
         wd.find_element_by_name("notes").send_keys(configurations_user.notes)
 
-    def save_user(self):
-        wd = self.app.wd
-        wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
-
     def add_new_user(self, configurations_user):
-        wd = self.open_add_user_page()
+        wd = self.app.wd
+        self.open_add_user_page()
         self.fill_in_user(configurations_user)
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
         self.return_start_page()
@@ -94,7 +97,7 @@ class UserHelper:
 
     def edit_first_user(self, configurations_user):
         wd = self.app.wd
-        wd.find_element_by_link_text("home").click()
+        self.open_users_page()
         # Изменить первый контакт
         wd.find_element_by_xpath("//img[@alt='Edit']").click()
         self.fill_in_user(configurations_user)
@@ -102,10 +105,11 @@ class UserHelper:
 
     def return_start_page(self):
         wd = self.app.wd
-        wd.find_element_by_link_text("home page").click()
+        if wd.find_element_by_link_text("home page"):
+            wd.find_element_by_link_text("home page").click()
         wd.find_element_by_link_text("Logout")
 
     def count(self):
         wd = self.app.wd
-        wd.find_element_by_link_text("home").click()
+        self.open_users_page()
         return len(wd.find_elements_by_name("selected[]"))
