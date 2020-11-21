@@ -1,5 +1,4 @@
 ﻿# -*- coding: utf-8 -*-
-from model.configurations_login import Configurations_login
 from model.configurations_user import Configurations_user
 
 def test_user(app):
