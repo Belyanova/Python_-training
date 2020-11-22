@@ -1,4 +1,5 @@
 ﻿from selenium.webdriver.support.ui import Select
+from model.configurations_user import Configurations_user
 
 class UserHelper:
     def __init__(self, app):
@@ -64,7 +65,7 @@ class UserHelper:
         Select(wd.find_element_by_name("aday")).select_by_visible_text(configurations_user.aday)
         wd.find_element_by_xpath("(//option[@value='1'])[2]").click()
         Select(wd.find_element_by_name("amonth")).select_by_visible_text(configurations_user.amonth)
-        wd.find_element_by_xpath("(//option[@value='April'])[2]").click()
+        wd.find_element_by_xpath("(//option[@value='April'])").click()
         wd.find_element_by_name("ayear").click()
         wd.find_element_by_name("ayear").clear()
         wd.find_element_by_name("ayear").send_keys(configurations_user.ayear)
@@ -113,3 +114,15 @@ class UserHelper:
         wd = self.app.wd
         self.open_users_page()
         return len(wd.find_elements_by_name("selected[]"))
+
+    def get_user_list(self):
+        wd = self.app.wd
+        self.open_users_page()
+        users = []
+        for elements in wd.find_elements_by_name("entry"):
+            text = elements.find_elements_by_xpath(".//td")
+            last_name = text[1].text
+            firstname = text[2].text
+            id = elements.find_element_by_name("selected[]").get_attribute("value")
+            users.append(Configurations_user(last_name=last_name, firstname=firstname, id=id))
+        return users
