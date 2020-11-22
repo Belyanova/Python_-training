@@ -39,22 +39,28 @@ class GroupHelper:
         self.group_cache = None
 
     def select_first_group(self):
-        # выбрать первую группу
+        self.select_group_by_index(0)
+
+    def select_group_by_index(self,index):
         wd = self.app.wd
-        wd.find_element_by_name("selected[]").click()
+        wd.find_elements_by_name("selected[]")[index].click()
 
     def delete_first_group(self):
         wd = self.app.wd
+        self.delete_group_by_index(0)
+
+    def delete_group_by_index(self, index):
+        wd = self.app.wd
         self.open_groups_page()
-        self.select_first_group()
+        self.select_group_by_index(index)
         wd.find_element_by_name("delete").click()
         self.return_to_groups_page()
         self.group_cache = None
 
-    def edit_first_group(self, configurations_group):
+    def edit_group_by_index(self, index, configurations_group):
         wd = self.app.wd
         self.open_groups_page()
-        self.select_first_group()
+        self.select_group_by_index(index)
         #изменить первую группу
         wd.find_element_by_name("edit").click()
         #Вводим новые данные
@@ -64,18 +70,9 @@ class GroupHelper:
         self.return_to_groups_page()
         self.group_cache = None
 
-    def modify_first_group(self, new_group_data):
+    def modify_first_group(self):
         wd = self.app.wd
-        self.open_groups_page()
-        self.select_first_group()
-        # изменить первую группу
-        wd.find_element_by_name("edit").click()
-        # Вводим новые данные
-        self.fill_in_group(new_group_data)
-        # сохраняем новые данные
-        wd.find_element_by_name("update").click()
-        self.return_to_groups_page()
-        self.group_cache = None
+        self.edit_group_by_index(0)
 
     def count(self):
         wd = self.app.wd

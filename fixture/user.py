@@ -86,22 +86,35 @@ class UserHelper:
         self.return_start_page()
         self.user_cache = None
 
+    def select_first_user(self):
+        wd = self.app.wd
+        self.select_user_by_index(0)
+
+    def select_user_by_index(self, index):
+        wd = self.app.wd
+        wd.find_elements_by_name("selected[]")[index].click()
+
     def delete_first_user(self):
+        self.delete_user_by_index(0)
+
+    def delete_user_by_index(self,index):
         wd = self.app.wd
         # выбрать первый контакт
         wd.find_element_by_link_text("home").click()
-        wd.find_element_by_name("selected[]").click()
-        wd.find_element_by_xpath("//img[@alt='Edit']").click()
-        # удалить первый контакт
-        wd.find_element_by_xpath("(//input[@name='update'])[3]").click()
-        #wd.switch_to_alert().accept()
+        self.select_user_by_index(index)
+        wd.find_element_by_xpath("//input[@value='Delete']").click()
+        wd.switch_to_alert().accept()
+        wd.find_element_by_css_selector("div.msgbox")
         self.user_cache = None
 
-    def edit_first_user(self, configurations_user):
+    def edit_first_user(self):
+        self.edit_user_by_index(0)
+
+    def edit_user_by_index(self, index, configurations_user):
         wd = self.app.wd
         self.open_users_page()
-        # Изменить первый контакт
-        wd.find_element_by_xpath("//img[@alt='Edit']").click()
+        self.select_user_by_index(index)
+        wd.find_elements_by_xpath("//img[@alt='Edit']")[index].click()
         self.fill_in_user(configurations_user)
         wd.find_element_by_xpath("(//input[@name='update'])[2]").click()
         self.user_cache = None
