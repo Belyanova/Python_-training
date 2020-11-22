@@ -7,7 +7,7 @@ class UserHelper:
 
     def open_users_page(self):
         wd = self.app.wd
-        if not (wd.current_url.endswith("/index.php") and (wd.find_element_by_xpath("//img[@alt='vCard']"))):
+        if not (wd.current_url.endswith("/index.php") and (wd.find_elements_by_xpath("//form[2]/div[1]/input"))):
             wd.find_element_by_link_text("home").click()
 
     def open_add_user_page(self):
