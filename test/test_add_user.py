@@ -7,8 +7,8 @@ def test_user(app):
                           "April", "2000", "Address", "Home", "Notes")
     old_users = app.user.get_user_list()
     app.user.add_new_user(user)
-    new_users=app.user.get_user_list()
-    assert len(old_users)+1 == len(new_users)
+    assert len(old_users)+1 == app.user.count()
+    new_users = app.user.get_user_list()
     old_users.append(user)
     assert sorted(old_users, key=Configurations_user.id_or_max) == sorted(new_users,key=Configurations_user.id_or_max)
 

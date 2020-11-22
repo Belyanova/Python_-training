@@ -84,6 +84,7 @@ class UserHelper:
         self.fill_in_user(configurations_user)
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
         self.return_start_page()
+        self.user_cache = None
 
     def delete_first_user(self):
         wd = self.app.wd
@@ -94,7 +95,7 @@ class UserHelper:
         # удалить первый контакт
         wd.find_element_by_xpath("(//input[@name='update'])[3]").click()
         #wd.switch_to_alert().accept()
-
+        self.user_cache = None
 
     def edit_first_user(self, configurations_user):
         wd = self.app.wd
@@ -103,6 +104,7 @@ class UserHelper:
         wd.find_element_by_xpath("//img[@alt='Edit']").click()
         self.fill_in_user(configurations_user)
         wd.find_element_by_xpath("(//input[@name='update'])[2]").click()
+        self.user_cache = None
 
     def return_start_page(self):
         wd = self.app.wd
@@ -115,14 +117,17 @@ class UserHelper:
         self.open_users_page()
         return len(wd.find_elements_by_name("selected[]"))
 
+    user_cache = None
+
     def get_user_list(self):
-        wd = self.app.wd
-        self.open_users_page()
-        users = []
-        for elements in wd.find_elements_by_name("entry"):
-            text = elements.find_elements_by_xpath(".//td")
-            last_name = text[1].text
-            firstname = text[2].text
-            id = elements.find_element_by_name("selected[]").get_attribute("value")
-            users.append(Configurations_user(last_name=last_name, firstname=firstname, id=id))
-        return users
+        if self.user_cache is None:
+            wd = self.app.wd
+            self.open_users_page()
+            self.user_cache = []
+            for elements in wd.find_elements_by_name("entry"):
+                text = elements.find_elements_by_xpath(".//td")
+                last_name = text[1].text
+                firstname = text[2].text
+                id = elements.find_element_by_name("selected[]").get_attribute("value")
+                self.user_cache.append(Configurations_user(last_name=last_name, firstname=firstname, id=id))
+        return list(self.user_cache)
