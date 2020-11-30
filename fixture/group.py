@@ -30,7 +30,7 @@ class GroupHelper:
         wd = self.app.wd
         self.open_groups_page()
         # Создаем новую группу
-        wd.find_element_by_xpath("(//input[@name='new'])[2]").click()
+        wd.find_element_by_xpath('(//input[@name="new"])[2]').click()
         # Заполняем форму группы
         self.fill_in_group(configurations_group)
         # Нажимаем на кнопку

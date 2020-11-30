@@ -1,5 +1,6 @@
 ﻿from selenium.webdriver.support.ui import Select
 from model.configurations_user import Configurations_user
+import re
 
 class UserHelper:
     def __init__(self, app):
@@ -18,7 +19,7 @@ class UserHelper:
 
     def save_user(self):
         wd = self.app.wd
-        wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
+        wd.find_element_by_xpath('(//input[@name="submit"])[2]').click()
 
     def fill_in_user(self, configurations_user):
         wd = self.app.wd
@@ -82,7 +83,7 @@ class UserHelper:
         wd = self.app.wd
         self.open_add_user_page()
         self.fill_in_user(configurations_user)
-        wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
+        wd.find_element_by_xpath('(//input[@name="submit"])[2]').click()
         self.return_start_page()
         self.user_cache = None
 
@@ -102,7 +103,7 @@ class UserHelper:
         # выбрать первый контакт
         wd.find_element_by_link_text("home").click()
         self.select_user_by_index(index)
-        wd.find_element_by_xpath("//input[@value='Delete']").click()
+        wd.find_element_by_xpath('//input[@value="Delete"]').click()
         wd.switch_to_alert().accept()
         wd.find_element_by_css_selector("div.msgbox")
         self.user_cache = None
@@ -110,13 +111,23 @@ class UserHelper:
     def edit_first_user(self):
         self.edit_user_by_index(0)
 
-    def edit_user_by_index(self, index, configurations_user):
+    def open_edit_user_by_index(self, index):
         wd = self.app.wd
         self.open_users_page()
         self.select_user_by_index(index)
-        wd.find_elements_by_xpath("//img[@alt='Edit']")[index].click()
+        wd.find_elements_by_xpath('//img[@alt="Edit"]')[index].click()
+
+    def open_view_user_by_index(self, index):
+        wd = self.app.wd
+        self.open_users_page()
+        self.select_user_by_index(index)
+        wd.find_elements_by_xpath("//img[@alt='Details']")[index].click()
+
+    def edit_user_by_index(self, index, configurations_user):
+        wd = self.app.wd
+        self.open_edit_user_by_index(index)
         self.fill_in_user(configurations_user)
-        wd.find_element_by_xpath("(//input[@name='update'])[2]").click()
+        wd.find_element_by_xpath('(//input[@name="update")[2]').click()
         self.user_cache = None
 
     def return_start_page(self):
@@ -142,5 +153,30 @@ class UserHelper:
                 last_name = text[1].text
                 firstname = text[2].text
                 id = elements.find_element_by_name("selected[]").get_attribute("value")
-                self.user_cache.append(Configurations_user(last_name=last_name, firstname=firstname, id=id))
+                all_phones = text[5].text.splitlines()
+                self.user_cache.append(Configurations_user(last_name=last_name, firstname=firstname, id=id,
+                phone2 = all_phones[3],phone_home = all_phones[0], phone_mobile = all_phones[1], phone_work = all_phones[2]))
         return list(self.user_cache)
+
+    def get_user_info_from_edit_page(self, index):
+        wd = self.app.wd
+        self.open_edit_user_by_index(index)
+        firstname = wd.find_element_by_name("firstname").get_attribute("value")
+        id = wd.find_element_by_name("id").get_attribute("value")
+        last_name = wd.find_element_by_name("lastname").get_attribute("value")
+        phone_home = wd.find_element_by_name("home").get_attribute("value")
+        phone_mobile = wd.find_element_by_name("mobile").get_attribute("value")
+        phone_work = wd.find_element_by_name("work").get_attribute("value")
+        phone2 = wd.find_element_by_name("phone2").get_attribute("value")
+        return Configurations_user(firstname=firstname, last_name=last_name, phone2=phone2,
+                                   phone_home=phone_home, phone_mobile=phone_mobile,phone_work=phone_work, id=id)
+
+    def get_user_from_view_page(self, index):
+        wd = self.app.wd
+        self.open_view_user_by_index(index)
+        text = wd.find_element_by_id("content").text
+        phone_home = re.search("H: (.*)", text).group(1)
+        phone_mobile = re.search("M: (.*)", text).group(1)
+        phone_work = re.search("W: (.*)", text).group(1)
+        phone2 = re.search("P: (.*)", text).group(1)
+        return Configurations_user(phone2=phone2, phone_home=phone_home, phone_mobile=phone_mobile, phone_work=phone_work)
