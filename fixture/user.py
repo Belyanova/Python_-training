@@ -127,7 +127,7 @@ class UserHelper:
         wd = self.app.wd
         self.open_edit_user_by_index(index)
         self.fill_in_user(configurations_user)
-        wd.find_element_by_xpath('(//input[@name="update")[2]').click()
+        wd.find_element_by_xpath("(//input[@name='update'])[2]").click()
         self.user_cache = None
 
     def return_start_page(self):
@@ -150,26 +150,32 @@ class UserHelper:
             self.user_cache = []
             for elements in wd.find_elements_by_name("entry"):
                 text = elements.find_elements_by_xpath(".//td")
-                last_name = text[1].text
-                firstname = text[2].text
+                user_name = (text[1].text + text[2].text)
                 id = elements.find_element_by_name("selected[]").get_attribute("value")
-                all_phones = text[5].text.splitlines()
-                self.user_cache.append(Configurations_user(last_name=last_name, firstname=firstname, id=id,
-                phone2 = all_phones[3],phone_home = all_phones[0], phone_mobile = all_phones[1], phone_work = all_phones[2]))
+                all_phones = text[5].text
+                address = text[3].text
+                all_mail = text[4].text
+                self.user_cache.append(Configurations_user(user_name=user_name, id=id,address=address,
+                                                         all_mail=all_mail, all_phones_from_home_page=all_phones))
         return list(self.user_cache)
 
     def get_user_info_from_edit_page(self, index):
         wd = self.app.wd
         self.open_edit_user_by_index(index)
-        firstname = wd.find_element_by_name("firstname").get_attribute("value")
         id = wd.find_element_by_name("id").get_attribute("value")
         last_name = wd.find_element_by_name("lastname").get_attribute("value")
+        firstname = wd.find_element_by_name("firstname").get_attribute("value")
         phone_home = wd.find_element_by_name("home").get_attribute("value")
         phone_mobile = wd.find_element_by_name("mobile").get_attribute("value")
         phone_work = wd.find_element_by_name("work").get_attribute("value")
         phone2 = wd.find_element_by_name("phone2").get_attribute("value")
-        return Configurations_user(firstname=firstname, last_name=last_name, phone2=phone2,
-                                   phone_home=phone_home, phone_mobile=phone_mobile,phone_work=phone_work, id=id)
+        address = wd.find_element_by_name("address").get_attribute("value")
+        mail1 = wd.find_element_by_name("email").get_attribute("value")
+        mail2 = wd.find_element_by_name("email2").get_attribute("value")
+        mail3 = wd.find_element_by_name("email3").get_attribute("value")
+        return Configurations_user(firstname=firstname, last_name=last_name, phone2=phone2,address=address,
+                                   phone_home=phone_home, phone_mobile=phone_mobile,phone_work=phone_work, id=id,
+                                   mail1=mail1, mail2=mail2, mail3=mail3)
 
     def get_user_from_view_page(self, index):
         wd = self.app.wd
