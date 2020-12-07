@@ -150,13 +150,15 @@ class UserHelper:
             self.user_cache = []
             for elements in wd.find_elements_by_name("entry"):
                 text = elements.find_elements_by_xpath(".//td")
+                firstname = text[2].text
+                last_name = text[1].text
                 user_name = (text[1].text + text[2].text)
                 id = elements.find_element_by_name("selected[]").get_attribute("value")
                 all_phones = text[5].text
                 address = text[3].text
                 all_mail = text[4].text
-                self.user_cache.append(Configurations_user(user_name=user_name, id=id,address=address,
-                                                         all_mail=all_mail, all_phones_from_home_page=all_phones))
+                self.user_cache.append(Configurations_user(user_name=user_name, id=id,address=address,last_name=last_name,
+                                        firstname=firstname, all_mail=all_mail, all_phones_from_home_page=all_phones))
         return list(self.user_cache)
 
     def get_user_info_from_edit_page(self, index):
