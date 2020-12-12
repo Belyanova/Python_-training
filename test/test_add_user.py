@@ -20,8 +20,8 @@ testdata = [
                         address=random_string("address", 3), phone_home=random_string("phone_home", 5),
                         phone_mobile=random_string("phone_mobile", 3), phone_work=random_string("phone_work", 5),
                         mail1=random_string("mail1", 3), mail2=random_string("mail2", 5),mail3=random_string("mail3", 3),
-                        bd_day=str(randint(0, 31)), bd_month=random_month(),bd_year=str(randint(1900, 2100)),
-                        aday=str(randint(0, 31)),amonth=random_month(),ayear=(randint(1900, 2100)),
+                        bd_day=str(randint(1, 31)), bd_month=random_month(),bd_year=str(randint(1900, 2100)),
+                        aday=str(randint(1, 31)),amonth=random_month(),ayear=(randint(1900, 2100)),
                         address2=random_string("address2", 5), phone2=random_string("phone2", 3),notes = random_string("notes", 5))
 ]
 
