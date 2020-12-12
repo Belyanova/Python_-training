@@ -1,0 +1,5 @@
+﻿{
+  "baseUrl": "http://localhost/index.php",
+  "username": "admin",
+  "password": "secret"
+}
