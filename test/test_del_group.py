@@ -2,8 +2,8 @@
 from model.configurations_group import Configurations_group
 from random import randrange
 
-def test_delete_some_group(app):
-    group = Configurations_group(name="New group", header="Add group")
+def test_delete_some_group(app, json_groups):
+    group = json_groups
     if app.group.count() == 0:
         app.group.create(group)
     old_groups = app.group.get_group_list()

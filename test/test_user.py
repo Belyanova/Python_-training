@@ -1,13 +1,8 @@
-﻿from model.configurations_user import Configurations_user
-from random import randrange
+﻿from random import randrange
 import re
 
-def test_user_on_home_page(app):
-    user = Configurations_user("User_name", "name", "Last_name", "Nickname", "Title", "Company", "new Address",
-                               "999888777",
-                               "12345678", "87654321", "e-mail_1", "new e-mail_2", "e-mail_3", "1", "April", "1998",
-                               "1",
-                               "April", "2000", "new Address", "newHome", "Notes")
+def test_user_on_home_page(app, json_users):
+    user = json_users
     if app.user.count() == 0:
         app.user.add_new_user(user)
     old_users = app.user.get_user_list()

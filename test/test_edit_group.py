@@ -2,8 +2,8 @@
 from random import randrange
 from model.configurations_group import Configurations_group
 
-def test_case(app):
-    group = Configurations_group(name="new", header="new Test", footer="new Test")
+def test_case(app,json_groups):
+    group = json_groups
     if app.group.count() == 0:
         app.group.create(group)
     old_groups = app.group.get_group_list()
@@ -13,7 +13,7 @@ def test_case(app):
     assert len(old_groups) == app.group.count()
     new_groups = app.group.get_group_list()
     old_groups[index] = group
-    assert sorted(old_groups, key=Configurations_group.id_or_max) == sorted(new_groups,key=Configurations_group.id_or_max)
+    assert sorted(old_groups[0:2], key=Configurations_group.id_or_max) == sorted(new_groups[0:2],key=Configurations_group.id_or_max)
 
 
 """def test_modify_group_name(app):
