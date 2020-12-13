@@ -93,6 +93,10 @@ class UserHelper:
         wd = self.app.wd
         wd.find_elements_by_name("selected[]")[index].click()
 
+    def select_user_by_id(self, id):
+        wd = self.app.wd
+        wd.find_element_by_css_selector("input[value='%s']" % id).click()
+
     def delete_first_user(self):
         self.delete_user_by_index(0)
 
@@ -101,6 +105,16 @@ class UserHelper:
         # выбрать первый контакт
         wd.find_element_by_link_text("home").click()
         self.select_user_by_index(index)
+        wd.find_element_by_xpath('//input[@value="Delete"]').click()
+        wd.switch_to_alert().accept()
+        wd.find_element_by_css_selector("div.msgbox")
+        self.user_cache = None
+
+    def delete_user_by_id(self,id):
+        wd = self.app.wd
+        # выбрать первый контакт
+        wd.find_element_by_link_text("home").click()
+        self.select_user_by_id(id)
         wd.find_element_by_xpath('//input[@value="Delete"]').click()
         wd.switch_to_alert().accept()
         wd.find_element_by_css_selector("div.msgbox")
@@ -115,6 +129,12 @@ class UserHelper:
         self.select_user_by_index(index)
         wd.find_elements_by_xpath('//img[@alt="Edit"]')[index].click()
 
+    def open_edit_user_by_id(self, id):
+        wd = self.app.wd
+        self.open_users_page()
+        self.select_user_by_id(id)
+        wd.find_element_by_xpath('//img[@alt="Edit"]').click()
+
     def open_view_user_by_index(self, index):
         wd = self.app.wd
         self.open_users_page()
@@ -124,6 +144,13 @@ class UserHelper:
     def edit_user_by_index(self, index, configurations_user):
         wd = self.app.wd
         self.open_edit_user_by_index(index)
+        self.fill_in_user(configurations_user)
+        wd.find_element_by_xpath("(//input[@name='update'])[2]").click()
+        self.user_cache = None
+
+    def edit_user_by_id(self, id, configurations_user):
+        wd = self.app.wd
+        self.open_edit_user_by_id(id)
         self.fill_in_user(configurations_user)
         wd.find_element_by_xpath("(//input[@name='update'])[2]").click()
         self.user_cache = None

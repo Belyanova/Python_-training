@@ -1,16 +1,16 @@
 ﻿# -*- coding: utf-8 -*-
 from model.configurations_user import Configurations_user
-from random import randrange
+import random
 
-def test_case(app,json_users):
+def test_case(app, db, check_ui,json_users):
     user = json_users
-    if app.user.count() == 0:
+    if len(db.get_user_list()) == 0:
         app.user.add_new_user(user)
-    old_users = app.user.get_user_list()
-    index = randrange(len(old_users))
-    user.id = old_users[index].id
-    app.user.edit_user_by_index(index,user)
+    old_users = db.get_user_list()
+    user = random.choice(old_users)
+    app.user.edit_user_by_id(user.id,user)
     assert len(old_users) == app.user.count()
-    new_users = app.user.get_user_list()
-    old_users[index] = user
-    assert sorted(old_users, key=Configurations_user.id_or_max) == sorted(new_users, key=Configurations_user.id_or_max)
+    new_users = db.get_user_list()
+    assert old_users == new_users
+    if check_ui:
+        assert sorted(old_users, key=Configurations_user.id_or_max) == sorted(new_users, key=Configurations_user.id_or_max)
