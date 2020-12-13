@@ -1,5 +1,6 @@
 ﻿# -*- coding: utf-8 -*-
 from model.configurations_user import Configurations_user
+import re
 import random
 
 def test_case(app, db, check_ui,json_users):
@@ -11,6 +12,9 @@ def test_case(app, db, check_ui,json_users):
     app.user.edit_user_by_id(user.id,user)
     assert len(old_users) == app.user.count()
     new_users = db.get_user_list()
-    assert old_users == new_users
+    assert old_users == user
     if check_ui:
-        assert sorted(old_users, key=Configurations_user.id_or_max) == sorted(new_users, key=Configurations_user.id_or_max)
+        assert sorted(clear(old_users), key=Configurations_user.id_or_max) == sorted(clear(new_users), key=Configurations_user.id_or_max)
+
+def clear(s):
+    return re.sub("[() -]","",s)
