@@ -56,15 +56,19 @@ class UserHelper:
         wd.find_element_by_name("email2").send_keys(configurations_user.mail2)
         wd.find_element_by_name("email3").clear()
         wd.find_element_by_name("email3").send_keys(configurations_user.mail3)
-        Select(wd.find_element_by_name("bday")).select_by_visible_text(configurations_user.bd_day)
-        wd.find_element_by_xpath("//option[@value='1']").click()
-        Select(wd.find_element_by_name("bmonth")).select_by_visible_text(configurations_user.bd_month)
+        #Select(wd.find_element_by_name("bday")).select_by_visible_text(configurations_user.bd_day)
+        Select(wd.find_element_by_name("bday"))
+        wd.find_element_by_xpath("//option[@value='%s']" % configurations_user.bd_day).click()
+        Select(wd.find_element_by_name("bmonth"))
+        wd.find_element_by_xpath("//option[@value='%s']" % configurations_user.bd_month).click()
         wd.find_element_by_name("byear").click()
         wd.find_element_by_name("byear").clear()
         wd.find_element_by_name("byear").send_keys(configurations_user.bd_year)
-        Select(wd.find_element_by_name("aday")).select_by_visible_text(configurations_user.aday)
-        wd.find_element_by_xpath("(//option[@value='1'])[2]").click()
-        Select(wd.find_element_by_name("amonth")).select_by_visible_text(configurations_user.amonth)
+        #Select(wd.find_element_by_name("aday")).select_by_visible_text(configurations_user.aday)
+        Select(wd.find_element_by_name("aday"))
+        wd.find_element_by_xpath("//option[@value='%s']" % configurations_user.aday).click()
+        Select(wd.find_element_by_name("amonth"))
+        wd.find_element_by_xpath("//option[@value='%s']" % configurations_user.amonth).click()
         wd.find_element_by_name("ayear").click()
         wd.find_element_by_name("ayear").clear()
         wd.find_element_by_name("ayear").send_keys(configurations_user.ayear)
@@ -93,10 +97,6 @@ class UserHelper:
         wd = self.app.wd
         wd.find_elements_by_name("selected[]")[index].click()
 
-    def select_user_by_id(self, id):
-        wd = self.app.wd
-        wd.find_element_by_css_selector("input[value='%s']" % id).click()
-
     def delete_first_user(self):
         self.delete_user_by_index(0)
 
@@ -105,16 +105,6 @@ class UserHelper:
         # выбрать первый контакт
         wd.find_element_by_link_text("home").click()
         self.select_user_by_index(index)
-        wd.find_element_by_xpath('//input[@value="Delete"]').click()
-        wd.switch_to_alert().accept()
-        wd.find_element_by_css_selector("div.msgbox")
-        self.user_cache = None
-
-    def delete_user_by_id(self,id):
-        wd = self.app.wd
-        # выбрать первый контакт
-        wd.find_element_by_link_text("home").click()
-        self.select_user_by_id(id)
         wd.find_element_by_xpath('//input[@value="Delete"]').click()
         wd.switch_to_alert().accept()
         wd.find_element_by_css_selector("div.msgbox")
@@ -129,12 +119,6 @@ class UserHelper:
         self.select_user_by_index(index)
         wd.find_elements_by_xpath('//img[@alt="Edit"]')[index].click()
 
-    def open_edit_user_by_id(self, id):
-        wd = self.app.wd
-        self.open_users_page()
-        self.select_user_by_id(id)
-        wd.find_element_by_xpath('//img[@alt="Edit"]').click()
-
     def open_view_user_by_index(self, index):
         wd = self.app.wd
         self.open_users_page()
@@ -144,13 +128,6 @@ class UserHelper:
     def edit_user_by_index(self, index, configurations_user):
         wd = self.app.wd
         self.open_edit_user_by_index(index)
-        self.fill_in_user(configurations_user)
-        wd.find_element_by_xpath("(//input[@name='update'])[2]").click()
-        self.user_cache = None
-
-    def edit_user_by_id(self, id, configurations_user):
-        wd = self.app.wd
-        self.open_edit_user_by_id(id)
         self.fill_in_user(configurations_user)
         wd.find_element_by_xpath("(//input[@name='update'])[2]").click()
         self.user_cache = None
@@ -213,3 +190,30 @@ class UserHelper:
         phone_work = re.search("W: (.*)", text).group(1)
         phone2 = re.search("P: (.*)", text).group(1)
         return Configurations_user(phone2=phone2, phone_home=phone_home, phone_mobile=phone_mobile, phone_work=phone_work)
+
+    def delete_user_by_id(self,id):
+        wd = self.app.wd
+        # выбрать первый контакт
+        wd.find_element_by_link_text("home").click()
+        self.select_user_by_id(id)
+        wd.find_element_by_xpath('//input[@value="Delete"]').click()
+        wd.switch_to_alert().accept()
+        wd.find_element_by_css_selector("div.msgbox")
+        self.user_cache = None
+
+    def select_user_by_id(self, id):
+        wd = self.app.wd
+        wd.find_element_by_css_selector("input[value='%s']" % id).click()
+
+    def open_user_to_edit_by_id(self, id):
+        wd = self.app.wd
+        self.app.open_home_page()
+        wd.find_element_by_xpath("//*[@id='maintable']/tbody").find_element_by_xpath("//*[@href='edit.php?id=%s']" % id).click()
+
+    def edit_user_by_id(self,id,configurations_user):
+        wd = self.app.wd
+        self.open_user_to_edit_by_id(id)
+        self.fill_in_user(configurations_user)
+        wd.find_element_by_name("update").click()
+        wd.find_element_by_link_text("home page").click()
+        self.contact_cache = None

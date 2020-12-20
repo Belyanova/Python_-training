@@ -12,7 +12,7 @@ def test_case(app, db, check_ui,json_users):
     app.user.edit_user_by_id(user.id,user)
     assert len(old_users) == app.user.count()
     new_users = db.get_user_list()
-    assert old_users == user
+    assert len(old_users) == len(new_users)
     if check_ui:
         assert sorted(clear(old_users), key=Configurations_user.id_or_max) == sorted(clear(new_users), key=Configurations_user.id_or_max)
 
