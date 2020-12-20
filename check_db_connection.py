@@ -1,12 +1,13 @@
 ﻿import pymysql
-from fixture.db import  DbFixture
+from fixture.orm import ORM_fixture
+from model.configurations_group import  Configurations_group
 
-db = DbFixture (host="127.0.0.1", name="addressbook", user="root", password="")
+db = ORM_fixture (host="127.0.0.1", name="addressbook", user="root", password="")
 
 try:
-    users = db.get_user_list()
-    for user in users:
-        print(user)
-    print(len(users))
+    l = db.get_users_not_in_group(Configurations_group(id="60"))
+    for item in l:
+        print(item)
+    print(len(l))
 finally:
-    db.destroy()
+    pass #db.destroy()
