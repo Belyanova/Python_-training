@@ -14,7 +14,7 @@ except getopt.GetoptError as err:
     sys.exit(2)
 
 n = 5
-f = "data/users.json"
+f = "data/users_in_group.json"
 
 for o, a in opts:
     if o == "-n":
@@ -25,6 +25,10 @@ for o, a in opts:
 def random_string(prefix, maxlen):
     symbols = string.ascii_letters + string.digits
     return prefix + "".join([random.choice(symbols) for i in range(random.randrange(maxlen))])
+
+def random_group():
+    group = ["nameUo0dF8ek", "nameCLVRNGeF", "nameR4i", "nameJ7RV", "nameMXfdEejr"]
+    return random.choice(group)
 
 def random_month():
     month = ["January","February","March","April","May","June","July","August","September","October","November","December"]
@@ -38,7 +42,7 @@ testdata = [
                         phone_mobile=random_string("phone_mobile", 3), phone_work=random_string("phone_work", 5),
                         mail1=random_string("mail1", 3), mail2=random_string("mail2", 5),mail3=random_string("mail3", 3),
                         bd_day=str(randint(1, 31)), bd_month=random_month(),bd_year=str(randint(1900, 2100)),
-                        aday=str(randint(1, 31)),amonth=random_month(),ayear=(randint(1900, 2100)),
+                        aday=str(randint(1, 31)),amonth=random_month(),ayear=(randint(1900, 2100)), group=random_group(),
                         address2=random_string("address2", 5), phone2=random_string("phone2", 3),notes = random_string("notes", 5))
     for i in range(n)
 ]

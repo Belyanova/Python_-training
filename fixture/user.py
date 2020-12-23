@@ -70,6 +70,7 @@ class UserHelper:
         wd.find_element_by_name("ayear").click()
         wd.find_element_by_name("ayear").clear()
         wd.find_element_by_name("ayear").send_keys(configurations_user.ayear)
+        Select(wd.find_element_by_name("new_group")).select_by_visible_text(configurations_user.group)
         wd.find_element_by_name("address2").click()
         wd.find_element_by_name("address2").clear()
         wd.find_element_by_name("address2").send_keys(configurations_user.address2)
@@ -215,3 +216,33 @@ class UserHelper:
         wd.find_element_by_name("update").click()
         wd.find_element_by_link_text("home page").click()
         self.contact_cache = None
+
+    def group_selection(self, group):
+        wd = self.app.wd
+        Select(wd.find_element_by_name("group")).select_by_visible_text(group)
+
+    def get_user_in_group_list(self, group):
+        wd = self.app.wd
+        Select(wd.find_element_by_name("group")).select_by_visible_text(group)
+        if self.user_cache is None:
+            wd = self.app.wd
+            self.user_cache = []
+            for elements in wd.find_elements_by_name("entry"):
+                text = elements.find_elements_by_xpath(".//td")
+                firstname = text[2].text
+                last_name = text[1].text
+                user_name = (text[1].text + text[2].text)
+                id = elements.find_element_by_name("selected[]").get_attribute("value")
+                all_phones = text[5].text
+                address = text[3].text
+                all_mail = text[4].text
+                self.user_cache.append(Configurations_user(user_name=user_name, id=id,address=address,last_name=last_name,
+                                        firstname=firstname, all_mail=all_mail, all_phones_from_home_page=all_phones))
+        return list(self.user_cache)
+
+    def del_user_in_group(self):
+        wd = self.app.wd
+        wd.find_element_by_xpath('//input[@value="Delete"]').click()
+        wd.switch_to_alert().accept()
+        wd.find_element_by_css_selector("div.msgbox")
+        self.user_cache = None
