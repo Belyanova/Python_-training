@@ -1,6 +1,7 @@
 ﻿import pymysql
 from model.configurations_group import Configurations_group
 from model.configurations_user import Configurations_user
+from model.user_in_group import UserGroup
 
 class DbFixture:
     def __init__(self, host, name, user, password):
@@ -39,6 +40,17 @@ class DbFixture:
             cursor.close()
         return list
 
+    def get_user_in_group_list(self):
+        list = []
+        cursor = self.connection.cursor()
+        try:
+            cursor.execute("select id, group_id from address_in_groups")
+            for row in cursor:
+                (id, group_id) = row
+                list.append(UserGroup(id=str(id), group_id=str(group_id)))
+        finally:
+            cursor.close()
+        return list
 
     def destroy(self):
         self.connection.close()

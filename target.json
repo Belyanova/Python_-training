@@ -1,6 +1,6 @@
 {
   "web" : {
-    "baseUrl": "http://localhost/index.php",
+    "baseUrl": "http://addressbook.local/index.php",
     "username": "admin",
     "password": "secret"
   },

@@ -2,7 +2,7 @@
 class Configurations_user:
     def __init__(self, firstname=None, middlename=None, last_name=None, nickname=None, title=None, company=None, address=None,
                  phone_home=None,phone_mobile=None, phone_work=None, mail1=None, mail2=None, mail3=None, bd_day=None, bd_month=None,
-                 bd_year=None, aday=None, amonth=None, ayear=None, group=None, address2=None, phone2=None, notes=None, id=None,
+                 bd_year=None, aday=None, amonth=None, ayear=None, address2=None, phone2=None, notes=None, id=None,
                  all_phones_from_home_page=None, user_name=None, all_mail=None):
         self.firstname = firstname
         self.middlename = middlename
@@ -23,7 +23,6 @@ class Configurations_user:
         self.aday = aday
         self.amonth = amonth
         self.ayear = ayear
-        self.group = group
         self.address2 = address2
         self.phone2 = phone2
         self.notes = notes

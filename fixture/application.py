@@ -2,6 +2,7 @@
 from fixture.session import SessionHelper
 from fixture.user import UserHelper
 from fixture.group import GroupHelper
+from fixture.user_group import UserGroupHelper
 
 
 class Application:
@@ -19,6 +20,7 @@ class Application:
         self.group = GroupHelper(self)
         self.user = UserHelper(self)
         self.baseUrl = baseUrl
+        self.UserGroup = UserGroupHelper(self)
 
     def is_valid(self):
         try:
