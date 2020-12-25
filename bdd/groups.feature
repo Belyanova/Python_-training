@@ -1,8 +1,8 @@
 ﻿Scenario Outline: Add new group
   Given a group list
   Given a group with <name>, <header> and <footer>
-  When I add a new group the list
-  Then the new group list is equal to the list with the added group
+  When I add the group the list
+  Then the new group list is equal to the old list with the added group
 
   Examples:
   | name  | header  | footer  |
