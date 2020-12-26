@@ -1,20 +1,25 @@
 ﻿import re
 from model.configurations_user import Configurations_user
+import pytest
+import allure
 
 def test_user_on_home_page(app, db, json_users):
     user = json_users
-    if app.user.count() == 0:
-        app.user.add_new_user(user)
-    users_from_home_page = app.user.get_user_list()
-    users_from_db = db.get_user_list()
-    assert len(users_from_home_page) == len(users_from_db)
-    #assert sorted(users_from_home_page, key=Configurations_user.id_or_max) == sorted(users_from_db, key=Configurations_user.id_or_max)
-    for i in range(len(users_from_home_page)):
-        user_from_home_page_by_index = sorted(app.user.get_user_list(), key=Configurations_user.id_or_max)[i]
-        user_from_db_by_index = db.get_user_list()[i]
-        assert user_from_home_page_by_index.user_name == merge_user_like_on_home_page(user_from_db_by_index)
-        assert user_from_home_page_by_index.all_mail == merge_mail_like_on_home_page(user_from_db_by_index)
-        assert user_from_home_page_by_index.all_phones_from_home_page == merge_phones_like_on_home_page(user_from_db_by_index)
+    with allure.step('Given a non-empty user list'):
+        if app.user.count() == 0:
+            app.user.add_new_user(user)
+    with allure.step('Given a user from home page and db'):
+        users_from_home_page = app.user.get_user_list()
+        users_from_db = db.get_user_list()
+    with allure.step('Then the user from home page is equal to the db '):
+        assert len(users_from_home_page) == len(users_from_db)
+        #assert sorted(users_from_home_page, key=Configurations_user.id_or_max) == sorted(users_from_db, key=Configurations_user.id_or_max)
+        for i in range(len(users_from_home_page)):
+            user_from_home_page_by_index = sorted(app.user.get_user_list(), key=Configurations_user.id_or_max)[i]
+            user_from_db_by_index = db.get_user_list()[i]
+            assert user_from_home_page_by_index.user_name == merge_user_like_on_home_page(user_from_db_by_index)
+            assert user_from_home_page_by_index.all_mail == merge_mail_like_on_home_page(user_from_db_by_index)
+            assert user_from_home_page_by_index.all_phones_from_home_page == merge_phones_like_on_home_page(user_from_db_by_index)
 
 
 
